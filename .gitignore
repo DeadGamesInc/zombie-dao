@@ -1,0 +1,13 @@
+.idea/
+artifacts/
+build/
+cache/
+node_modules/
+obj/
+typechain-types
+
+.bscscanApiKey
+.polygonscanApiKey
+.secret
+launchSettings.json
+yarn-error.log

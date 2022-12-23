@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZombieDAO", "ZombieDAO\ZombieDAO.csproj", "{BCCC8F94-0AD3-4152-92B6-D9AD8F17B51A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{E95CFE52-D65A-4D5C-BEE5-925CFE007A34}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+		.clocignore = .clocignore
+		apply_db_migration.sh = apply_db_migration.sh
+		create_db_migration.sh = create_db_migration.sh
+		lines.sh = lines.sh
+		remove_db_migration.sh = remove_db_migration.sh
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCCC8F94-0AD3-4152-92B6-D9AD8F17B51A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCCC8F94-0AD3-4152-92B6-D9AD8F17B51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCCC8F94-0AD3-4152-92B6-D9AD8F17B51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCCC8F94-0AD3-4152-92B6-D9AD8F17B51A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
