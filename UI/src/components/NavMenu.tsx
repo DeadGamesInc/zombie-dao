@@ -73,7 +73,7 @@ const NavMenu: React.FC = () => {
         <NavMenuBrand text="ZOMBIE DAO" />
         <DesktopSection className="space-x-4">
           <NavMenuLink text="HOME" target={routes.HOME} />
-          <NavMenuLink text="PROJECTS" target={routes.HOME} />
+          <NavMenuLink text="PROJECTS" target={routes.PROJECTS} />
           <NavMenuLink text="CREATE PROJECT" target={routes.CREATE_PROJECT} />
         </DesktopSection>
         <DesktopSection>
@@ -111,7 +111,11 @@ const NavMenu: React.FC = () => {
       {menuOpen && (
         <MobileMenu>
           <MobileNavLink text="HOME" target={routes.HOME} />
-          <MobileNavLink text="PROJECTS" target={routes.HOME} />
+          <MobileNavLink text="PROJECTS" target={routes.PROJECTS} />
+          <MobileNavLink text="CREATE PROJECT" target={routes.CREATE_PROJECT} />
+          {wallet === '' && (
+            <MobileActionLink text="CONNECT WALLET" onClick={connect_wallet} />
+          )}
           {logged_in ? (
             <>
               <MobileActionLink text="LOGOUT" onClick={logout} />
