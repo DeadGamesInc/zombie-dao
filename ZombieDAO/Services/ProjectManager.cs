@@ -13,10 +13,9 @@ public sealed class ProjectManager {
     }
 
     public async Task<ProjectDetailsDTO> GetById(Guid id, string wallet, CancellationToken token) {
-        var project = await _projectsRepository.GetById(id, token);
+        var project = await _projectsRepository.GetByID(id, token);
         var check = project.Members.FirstOrDefault(a => a.UserWallet == wallet);
-        if (check != null) ProjectDetailsDTO.Create(project, true, check.Level);
-        return ProjectDetailsDTO.Create(project);
+        return check != null ? ProjectDetailsDTO.Create(project, true, check.Level) : ProjectDetailsDTO.Create(project);
     }
 
     public async Task<ProjectDetailsDTO> Create(CreateProjectDTO dto, string wallet, CancellationToken token) {
@@ -56,7 +55,7 @@ public sealed class ProjectManager {
 
     public async Task RemoveMember(Guid id, string member, string wallet, CancellationToken token) {
         var current = await GetById(id, wallet, token);
-        if (current.Level == null && current.Level != ProjectMemberLevel.ADMIN) throw new NotAllowedException();
+        if (current.Level is not ProjectMemberLevel.ADMIN) throw new NotAllowedException();
 
         await _projectsRepository.RemoveMember(id, member, token);
     }

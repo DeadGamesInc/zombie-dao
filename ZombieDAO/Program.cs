@@ -66,9 +66,12 @@ public sealed class Program {
 
                 services.AddSingleton<UsersRepository>();
                 services.AddSingleton<ProjectsRepository>();
+                services.AddSingleton<GnosisRepository>();
+                
                 services.AddSingleton<BlockchainManager>();
                 
                 services.AddSingleton<ProjectManager>();
+                services.AddSingleton<GnosisManager>();
                 services.AddSingleton<UserManager>();
                 
                 services.AddHostedService<SystemManager>();

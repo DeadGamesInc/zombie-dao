@@ -22,6 +22,9 @@ public sealed class ProjectDetailsDTO {
     
     [JsonProperty("members")]
     public required ProjectMemberDTO[] Members { get; init; }
+    
+    [JsonProperty("gnosis_safes")]
+    public required GnosisSafeDetailsDTO[] GnosisSafes { get; init; }
 
     public static ProjectDetailsDTO Create(ProjectModel model, bool isMember = false, ProjectMemberLevel? level = null) {
         var members = Array.Empty<ProjectMemberDTO>();
@@ -30,10 +33,13 @@ public sealed class ProjectDetailsDTO {
             members = model.Members.Select(member => new ProjectMemberDTO
                 { DisplayName = member.User?.DisplayName ?? string.Empty, Level = member.Level }).ToArray();
         }
+
+        var gnosisSafes = Array.Empty<GnosisSafeDetailsDTO>();
+        if (model.GnosisSafes.Any()) gnosisSafes = model.GnosisSafes.Select(GnosisSafeDetailsDTO.Create).ToArray();
         
         return new ProjectDetailsDTO {
             ID = model.ID, Name = model.Name, Website = model.Website, EmailAddress = model.EmailAddress,
-            IsMember = isMember, Level = level, Members = members
+            IsMember = isMember, Level = level, Members = members, GnosisSafes = gnosisSafes
         };
     }
 }

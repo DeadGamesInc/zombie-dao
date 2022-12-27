@@ -13,12 +13,13 @@ public sealed class ProjectsRepository : ZombieDAORepository {
         return await Executor(action, "get_all");
     }
 
-    public async Task<ProjectModel> GetById(Guid id, CancellationToken token) {
+    public async Task<ProjectModel> GetByID(Guid id, CancellationToken token) {
         async Task<ProjectModel> action() {
             _logger.Information("Retrieving project {Id}", id);
             await using var context = await _factory.CreateDbContextAsync(token);
             var project = await context.Projects
                 .Include(project => project.Members).ThenInclude(member => member.User)
+                .Include(project => project.GnosisSafes)
                 .FirstOrDefaultAsync(a => a.ID == id, token);
 
             if (project == null) throw new NotFoundException("Invalid project ID");

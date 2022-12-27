@@ -1,4 +1,5 @@
 import ProjectMemberDTO from 'dtos/ProjectMemberDTO';
+import GnosisSafeDetailsDTO from 'dtos/GnosisSafeDetailsDTO';
 
 export default interface ProjectDetailsDTO {
   id: string;
@@ -6,6 +7,7 @@ export default interface ProjectDetailsDTO {
   website: string;
   email_address: string;
   is_member: boolean;
-  level?: number;
+  member_level?: number;
   members?: ProjectMemberDTO[];
+  gnosis_safes?: GnosisSafeDetailsDTO[];
 }

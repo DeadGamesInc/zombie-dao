@@ -15,6 +15,7 @@ public sealed class ProjectModel {
     public required string EmailAddress { get; set; }
 
     public List<ProjectMemberModel> Members { get; set; } = new();
+    public List<GnosisSafeModel> GnosisSafes { get; set; } = new();
 
     public static ProjectModel Create(CreateProjectDTO dto) {
         return new ProjectModel {

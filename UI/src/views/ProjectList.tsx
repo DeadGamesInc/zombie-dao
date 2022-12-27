@@ -8,6 +8,7 @@ import FailedResponse from 'types/FailedResponse';
 import PageContainer from 'components/PageContainer';
 import HeaderText from 'components/HeaderText';
 import TextLink from 'components/TextLink';
+import Loading from 'views/Loading';
 
 const ProjectList: React.FC = () => {
   const [projects, setProjects] = useState<ProjectDetailsDTO[]>();
@@ -18,6 +19,8 @@ const ProjectList: React.FC = () => {
       setProjects(result as ProjectDetailsDTO[]);
     });
   }, []);
+
+  if (projects === undefined) return <Loading />;
 
   return (
     <PageContainer>
@@ -30,18 +33,17 @@ const ProjectList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {projects &&
-            projects.map((project) => (
-              <tr key={project.id}>
-                <td>
-                  <TextLink
-                    text={project.name}
-                    target={`/projects/${project.id}`}
-                  />
-                </td>
-                <td>{project.website}</td>
-              </tr>
-            ))}
+          {projects.map((project) => (
+            <tr key={project.id}>
+              <td>
+                <TextLink
+                  text={project.name}
+                  target={`/projects/${project.id}`}
+                />
+              </td>
+              <td>{project.website}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </PageContainer>

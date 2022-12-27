@@ -4,6 +4,7 @@ import axiosRetry from 'axios-retry';
 import user_api_set, { UserApi } from 'api/users';
 import general_api_set, { GeneralApi } from 'api/general';
 import projects_api_set, { ProjectsApi } from 'api/projects';
+import gnosis_api_set, { GnosisApi } from 'api/gnosis';
 
 import FailedResponse from 'types/FailedResponse';
 
@@ -11,12 +12,14 @@ export interface Apis {
   general: GeneralApi;
   users: UserApi;
   projects: ProjectsApi;
+  gnosis: GnosisApi;
 }
 
 const apis: Apis = {
   general: general_api_set,
   users: user_api_set,
   projects: projects_api_set,
+  gnosis: gnosis_api_set,
 };
 
 export const getAxios = () => {

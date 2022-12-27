@@ -23,6 +23,7 @@ import Login from 'views/Login';
 import CreateProject from 'views/CreateProject';
 import ProjectList from 'views/ProjectList';
 import ProjectDetails from 'views/ProjectDetails';
+import GnosisSafe from 'views/GnosisSafe';
 
 const App: React.FC = () => {
   const logged_in = useAppSelector((state) => state.user.logged_in);
@@ -61,6 +62,7 @@ const App: React.FC = () => {
             <Route path={routes.CREATE_PROJECT} element={<CreateProject />} />
             <Route path={routes.PROJECTS} element={<ProjectList />} />
             <Route path={routes.PROJECT_DETAILS} element={<ProjectDetails />} />
+            <Route path={routes.GNOSIS_SAFE} element={<GnosisSafe />} />
           </Routes>
           <Footer
             brand_text="Zombie DAO"

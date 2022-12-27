@@ -9,6 +9,8 @@ public sealed class UserModel {
     public required string DisplayName { get; init; }
 
     public List<ProjectMemberModel> Projects { get; set; } = new();
+    public List<GnosisSafeTransactionModel> GnosisSafeTransactions { get; set; } = new();
+    public List<GnosisSafeConfirmationModel> GnosisSafeConfirmations { get; set; } = new();
 
     public static UserModel Create(CreateUserDTO dto) {
         return new UserModel {
