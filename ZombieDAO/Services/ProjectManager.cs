@@ -15,7 +15,7 @@ public sealed class ProjectManager {
     public async Task<ProjectDetailsDTO> GetById(Guid id, string wallet, CancellationToken token) {
         var project = await _projectsRepository.GetByID(id, token);
         var check = project.Members.FirstOrDefault(a => a.UserWallet == wallet);
-        return check != null ? ProjectDetailsDTO.Create(project, true, check.Level) : ProjectDetailsDTO.Create(project);
+        return check != null ? ProjectDetailsDTO.Create(project, true, check.Level, wallet) : ProjectDetailsDTO.Create(project);
     }
 
     public async Task<ProjectDetailsDTO> Create(CreateProjectDTO dto, string wallet, CancellationToken token) {

@@ -33,6 +33,26 @@ namespace ZombieDAO.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "gnosis_safe_tokens",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    safeid = table.Column<Guid>(name: "safe_id", type: "uuid", nullable: false),
+                    symbol = table.Column<string>(type: "text", nullable: false),
+                    address = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_gnosis_safe_tokens", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_gnosis_safe_tokens_gnosis_safes_safe_id",
+                        column: x => x.safeid,
+                        principalTable: "gnosis_safes",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "gnosis_safe_transactions",
                 columns: table => new
                 {
@@ -44,6 +64,7 @@ namespace ZombieDAO.Migrations
                     operation = table.Column<int>(type: "integer", nullable: false),
                     safetxgas = table.Column<string>(name: "safe_tx_gas", type: "text", nullable: false),
                     basegas = table.Column<string>(name: "base_gas", type: "text", nullable: false),
+                    gasprice = table.Column<string>(name: "gas_price", type: "text", nullable: false),
                     gastoken = table.Column<string>(name: "gas_token", type: "text", nullable: false),
                     refundreceiver = table.Column<string>(name: "refund_receiver", type: "text", nullable: false),
                     value = table.Column<string>(type: "text", nullable: false),
@@ -94,6 +115,11 @@ namespace ZombieDAO.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_gnosis_safe_tokens_safe_id",
+                table: "gnosis_safe_tokens",
+                column: "safe_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_gnosis_safe_transactions_safe",
                 table: "gnosis_safe_transactions",
                 column: "safe");
@@ -122,6 +148,9 @@ namespace ZombieDAO.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "gnosis_safe_tokens");
+
             migrationBuilder.DropTable(
                 name: "safe_confirmations");
 

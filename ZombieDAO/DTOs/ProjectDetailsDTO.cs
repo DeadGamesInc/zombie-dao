@@ -26,7 +26,7 @@ public sealed class ProjectDetailsDTO {
     [JsonProperty("gnosis_safes")]
     public required GnosisSafeDetailsDTO[] GnosisSafes { get; init; }
 
-    public static ProjectDetailsDTO Create(ProjectModel model, bool isMember = false, ProjectMemberLevel? level = null) {
+    public static ProjectDetailsDTO Create(ProjectModel model, bool isMember = false, ProjectMemberLevel? level = null, string wallet = "") {
         var members = Array.Empty<ProjectMemberDTO>();
         
         if (model.Members.Any()) {
@@ -35,7 +35,7 @@ public sealed class ProjectDetailsDTO {
         }
 
         var gnosisSafes = Array.Empty<GnosisSafeDetailsDTO>();
-        if (model.GnosisSafes.Any()) gnosisSafes = model.GnosisSafes.Select(GnosisSafeDetailsDTO.Create).ToArray();
+        if (model.GnosisSafes.Any()) gnosisSafes = model.GnosisSafes.Select(a => GnosisSafeDetailsDTO.Create(a, wallet)).ToArray();
         
         return new ProjectDetailsDTO {
             ID = model.ID, Name = model.Name, Website = model.Website, EmailAddress = model.EmailAddress,

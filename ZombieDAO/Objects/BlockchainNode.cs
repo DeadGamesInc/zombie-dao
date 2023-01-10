@@ -13,4 +13,7 @@ public sealed class BlockchainNode {
     
     [JsonProperty("explorer_tx_prefix")]
     public required string ExplorerTxPrefix { get; init; }
+    
+    [JsonProperty("base_token")]
+    public required string BaseToken { get; init; }
 }

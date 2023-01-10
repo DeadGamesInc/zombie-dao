@@ -7,6 +7,7 @@ public sealed class DataContext : DbContext {
     public DbSet<GnosisSafeModel> GnosisSafes => Set<GnosisSafeModel>();
     public DbSet<GnosisSafeTransactionModel> GnosisSafeTransactions => Set<GnosisSafeTransactionModel>();
     public DbSet<GnosisSafeConfirmationModel> GnosisSafeConfirmations => Set<GnosisSafeConfirmationModel>();
+    public DbSet<GnosisSafeTokenModel> GnosisSafeTokens => Set<GnosisSafeTokenModel>();
     
     public DataContext() { }
     public DataContext(DbContextOptions options) : base(options) { }
@@ -71,6 +72,11 @@ public sealed class DataContext : DbContext {
                 .HasMany(safe => safe.Transactions)
                 .WithOne(tx => tx.GnosisSafe)
                 .HasForeignKey(tx => tx.GnosisSafeID);
+
+            entity
+                .HasMany(safe => safe.Tokens)
+                .WithOne(token => token.Safe)
+                .HasForeignKey(token => token.SafeID);
         });
 
         modelBuilder.Entity<GnosisSafeTransactionModel>(entity => {
@@ -100,6 +106,13 @@ public sealed class DataContext : DbContext {
                 .HasOne(confirmation => confirmation.User)
                 .WithMany(user => user.GnosisSafeConfirmations)
                 .HasForeignKey(confirmation => confirmation.UserWallet);
+        });
+
+        modelBuilder.Entity<GnosisSafeTokenModel>(entity => {
+            entity
+                .HasOne(token => token.Safe)
+                .WithMany(safe => safe.Tokens)
+                .HasForeignKey(token => token.SafeID);
         });
     }
 }

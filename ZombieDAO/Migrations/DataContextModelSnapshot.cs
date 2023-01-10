@@ -84,6 +84,34 @@ namespace ZombieDAO.Migrations
                     b.ToTable("gnosis_safes");
                 });
 
+            modelBuilder.Entity("ZombieDAO.Models.GnosisSafeTokenModel", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("address");
+
+                    b.Property<Guid>("SafeID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("safe_id");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("symbol");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SafeID");
+
+                    b.ToTable("gnosis_safe_tokens");
+                });
+
             modelBuilder.Entity("ZombieDAO.Models.GnosisSafeTransactionModel", b =>
                 {
                     b.Property<Guid>("ID")
@@ -104,6 +132,11 @@ namespace ZombieDAO.Migrations
                     b.Property<bool>("Executed")
                         .HasColumnType("boolean")
                         .HasColumnName("executed");
+
+                    b.Property<string>("GasPrice")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gas_price");
 
                     b.Property<string>("GasToken")
                         .IsRequired()
@@ -250,6 +283,17 @@ namespace ZombieDAO.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("ZombieDAO.Models.GnosisSafeTokenModel", b =>
+                {
+                    b.HasOne("ZombieDAO.Models.GnosisSafeModel", "Safe")
+                        .WithMany("Tokens")
+                        .HasForeignKey("SafeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Safe");
+                });
+
             modelBuilder.Entity("ZombieDAO.Models.GnosisSafeTransactionModel", b =>
                 {
                     b.HasOne("ZombieDAO.Models.GnosisSafeModel", "GnosisSafe")
@@ -290,6 +334,8 @@ namespace ZombieDAO.Migrations
 
             modelBuilder.Entity("ZombieDAO.Models.GnosisSafeModel", b =>
                 {
+                    b.Navigation("Tokens");
+
                     b.Navigation("Transactions");
                 });
 

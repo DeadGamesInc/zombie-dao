@@ -14,7 +14,7 @@ public sealed class UserDetailsDTO {
     public static UserDetailsDTO Create(UserModel model) {
         var projects = Array.Empty<ProjectDetailsDTO>();
         if (model.Projects.Any()) {
-            projects = model.Projects.Select(project => ProjectDetailsDTO.Create(project.Project, true, project.Level)).ToArray();
+            projects = model.Projects.Select(project => ProjectDetailsDTO.Create(project.Project, true, project.Level, model.Wallet)).ToArray();
         }
         
         return new UserDetailsDTO { Wallet = model.Wallet, DisplayName = model.DisplayName, Projects = projects };

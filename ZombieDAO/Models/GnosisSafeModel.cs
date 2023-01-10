@@ -19,6 +19,7 @@ public sealed class GnosisSafeModel {
     
     public ProjectModel? Project { get; set; }
     public List<GnosisSafeTransactionModel> Transactions { get; set; } = new();
+    public List<GnosisSafeTokenModel> Tokens { get; set; } = new();
 
     public static GnosisSafeModel Create(CreateGnosisSafeDTO dto, Guid projectID) {
         return new GnosisSafeModel {

@@ -24,9 +24,9 @@ public static class Globals {
     
     public static readonly Dictionary<int, BlockchainNode> BLOCKCHAIN_NODES = new() {
         { 56, new BlockchainNode { ChainID = 56, Name = "BSC", URL = "https://bsc-dataseed1.binance.org/", 
-            ExplorerTxPrefix = "https://bscscan.com/tx/" } },
+            ExplorerTxPrefix = "https://bscscan.com/tx/", BaseToken = "BNB"} },
         { 97, new BlockchainNode { ChainID = 97, Name = "BSC-TESTNET", URL = "https://data-seed-prebsc-2-s1.binance.org:8545/", 
-            ExplorerTxPrefix = "https://testnet.bscscan.com/tx/" } }
+            ExplorerTxPrefix = "https://testnet.bscscan.com/tx/", BaseToken = "BNB"} }
     };
 
     public static readonly TimeSpan IDLE_SESSION_TIMEOUT = TimeSpan.FromMinutes(30);

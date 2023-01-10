@@ -16,4 +16,10 @@ public sealed class GnosisSafeConfirmationModel {
     
     public GnosisSafeTransactionModel? Transaction { get; set; }
     public UserModel? User { get; set; }
+
+    public static GnosisSafeConfirmationModel Create(CreateGnosisSafeConfirmationDTO dto, Guid txID, string wallet) {
+        return new GnosisSafeConfirmationModel {
+            Signature = dto.Signature, TransactionID = txID, UserWallet = wallet
+        };
+    }
 }

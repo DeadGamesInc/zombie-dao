@@ -16,10 +16,19 @@ const Button = tw.button`
 export interface ActionButtonProps {
   text: string;
   onClick: () => Promise<void>;
+  disabled?: boolean;
 }
 
-const ActionButton: React.FC<ActionButtonProps> = ({ text, onClick }) => {
-  return <Button onClick={onClick}>{text}</Button>;
+const ActionButton: React.FC<ActionButtonProps> = ({
+  text,
+  onClick,
+  disabled,
+}) => {
+  return (
+    <Button onClick={onClick} disabled={disabled}>
+      {text}
+    </Button>
+  );
 };
 
 export default ActionButton;

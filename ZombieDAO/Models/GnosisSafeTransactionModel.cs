@@ -26,6 +26,9 @@ public sealed class GnosisSafeTransactionModel {
     [Column("base_gas")]
     public required string BaseGas { get; init; }
     
+    [Column("gas_price")]
+    public required string GasPrice { get; init; }
+    
     [Column("gas_token")]
     public required string GasToken { get; init; }
     
@@ -44,4 +47,12 @@ public sealed class GnosisSafeTransactionModel {
     public GnosisSafeModel? GnosisSafe { get; set; }
     public UserModel? User { get; set; }
     public List<GnosisSafeConfirmationModel> Confirmations { get; set; } = new();
+
+    public static GnosisSafeTransactionModel Create(CreateGnosisSafeTransactionDTO dto, Guid safeID, string wallet) {
+        return new GnosisSafeTransactionModel {
+            GnosisSafeID = safeID, UserWallet = wallet, To = dto.To, Operation = dto.Operation, SafeTxGas = dto.SafeTxGas,
+            BaseGas = dto.BaseGas, Data = dto.Data, Nonce = dto.Nonce, Value = dto.Value, RefundReceiver = dto.RefundReceiver,
+            GasToken = dto.GasToken, GasPrice = dto.GasPrice
+        };
+    }
 }
