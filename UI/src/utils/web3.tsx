@@ -7,6 +7,11 @@ import ierc20Abi from 'config/abis/IERC20.json';
 
 import GnosisSafeOnchainDetails from 'types/GnosisSafeOnchainDetails';
 import FailedResponse from 'types/FailedResponse';
+import { AbstractProvider } from 'web3-core';
+import GnosisSafeDetailsDTO from '../dtos/GnosisSafeDetailsDTO';
+import { adjustV, GenerateTypedData, generateTypedDataFrom } from './eip712';
+import { EMPTY_DATA } from '../types/Web3';
+import { EIP712_NOT_SUPPORTED_ERROR_MSG, TxArgs } from '../types/EIP712';
 
 let ChainId = 0;
 let Account = '';
@@ -76,22 +81,45 @@ export const sign_message = async (message: string): Promise<string> => {
   }
 };
 
-export const sign_transaction = async (
-  tx_info: any,
+const eip712Signer = (
+  signer: string,
+  typedData: GenerateTypedData,
+): Promise<string> => {
+  const jsonTypedData = JSON.stringify(typedData);
+
+  // this will have to before supporting more safe versions
+  const signedTypedData = {
+    jsonrpc: '2.0',
+    method: 'eth_signTypedData_v3',
+    params: [signer, jsonTypedData],
+    from: signer,
+    id: new Date().getTime(),
+  };
+
+  return new Promise((resolve) => {
+    const provider = web3.currentProvider as AbstractProvider;
+    provider.sendAsync(signedTypedData, (err, signature) => {
+      if (err) {
+        throw err;
+      }
+
+      if (signature?.result == null) {
+        throw new Error(EIP712_NOT_SUPPORTED_ERROR_MSG);
+      }
+
+      const sig = adjustV('eth_signTypedData', signature.result);
+      resolve(sig.replace(EMPTY_DATA, ''));
+    });
+  });
+};
+
+export const sign_gnosis_transaction = async (
+  tx_info: TxArgs,
+  safe: GnosisSafeDetailsDTO,
 ): Promise<string | FailedResponse> => {
   try {
-    let signature = '';
-    await web3.eth.personal.signTransaction(
-      tx_info,
-      '',
-      function (error, result) {
-        if (error) {
-          console.log(error);
-          return FailedResponse;
-        } else signature = result.raw;
-      },
-    );
-    return signature;
+    const typedData = generateTypedDataFrom(tx_info, safe);
+    return await eip712Signer(Account, typedData);
   } catch (error) {
     console.log(error);
     return FailedResponse;

@@ -31,7 +31,7 @@ import {
   get_balance,
   get_erc20_balance,
   get_eip712_message_types,
-  sign_transaction,
+  sign_gnosis_transaction,
 } from 'utils/web3';
 
 export type GnosisSafeParams = {
@@ -178,6 +178,7 @@ const GnosisSafe: React.FC = () => {
 
   const handle_sign_transaction = async (
     tx: GnosisSafeTransactionDetailsDTO,
+    safe: GnosisSafeDetailsDTO,
   ): Promise<void> => {
     const tx_args = {
       to: tx.to,
@@ -192,7 +193,7 @@ const GnosisSafe: React.FC = () => {
       nonce: tx.nonce,
     };
 
-    const signature = await sign_transaction(tx_args);
+    const signature = await sign_gnosis_transaction(tx_args, safe);
     console.log(signature);
   };
 
@@ -266,7 +267,7 @@ const GnosisSafe: React.FC = () => {
               />
               <ActionButton
                 text="SIGN"
-                onClick={() => handle_sign_transaction(tx)}
+                onClick={() => handle_sign_transaction(tx, safe)}
                 disabled={tx.has_signed}
               />
             </>
