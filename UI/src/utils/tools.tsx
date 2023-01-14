@@ -28,6 +28,17 @@ const get_blockchain = (chain_id: number): SupportedBlockchain => {
   return chains.filter((a) => a.chain_id === chain_id)[0];
 };
 
+export const same_string = (
+  str1: string | undefined,
+  str2: string | undefined,
+): boolean => {
+  if (!str1 || !str2) {
+    return false;
+  }
+
+  return str1.toLowerCase() === str2.toLowerCase();
+};
+
 export interface ToolSet {
   project_member_level_string: (level: number) => string;
   get_blockchain: (chain_id: number) => SupportedBlockchain;
@@ -39,6 +50,8 @@ export interface ToolSet {
     decimals: number,
     decimalsToAppear: number,
   ) => string;
+
+  same_string: (str1: string | undefined, str2: string | undefined) => boolean;
 }
 
 const tool_set: ToolSet = {
@@ -47,6 +60,7 @@ const tool_set: ToolSet = {
   get_balance_amount,
   get_wei_amount,
   get_balance_display,
+  same_string,
 };
 
 export default tool_set;
