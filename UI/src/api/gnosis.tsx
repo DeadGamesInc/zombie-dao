@@ -1,10 +1,11 @@
-import { getAxios, executor } from 'api';
+import { executor, getAxios } from 'api';
 
 import FailedResponse from 'types/FailedResponse';
 import CreateGnosisSafeDTO from 'dtos/CreateGnosisSafeDTO';
 import GnosisSafeDetailsDTO from 'dtos/GnosisSafeDetailsDTO';
 import CreateGnosisSafeTokenDTO from 'dtos/CreateGnosisSafeTokenDTO';
 import CreateGnosisSafeTransactionDTO from 'dtos/CreateGnosisSafeTransactionDTO';
+import CreateGnosisSafeConfirmationDTO from '../dtos/CreateGnosisSafeConfirmationDTO';
 
 const get_by_id = async (
   id: string,
@@ -82,6 +83,22 @@ const delete_transaction = async (
   return await executor(action, 'delete_gnosis_safe_transaction');
 };
 
+const add_confirmation = async (
+  safe_id: string,
+  tx_id: string,
+  dto: CreateGnosisSafeConfirmationDTO,
+): Promise<void | FailedResponse> => {
+  const action = async (): Promise<void> => {
+    await getAxios().request({
+      method: 'PUT',
+      url: `gnosis/${safe_id}/transactions/${tx_id}/add_confirmation`,
+      data: dto,
+    });
+  };
+
+  return await executor(action, 'add_gnosis_transaction_confirmation');
+};
+
 export interface GnosisApi {
   get_by_id: (id: string) => Promise<GnosisSafeDetailsDTO | FailedResponse>;
 
@@ -104,6 +121,12 @@ export interface GnosisApi {
     safe_id: string,
     id: string,
   ) => Promise<void | FailedResponse>;
+
+  add_confirmation: (
+    safe_id: string,
+    tx_id: string,
+    dto: CreateGnosisSafeConfirmationDTO,
+  ) => Promise<void | FailedResponse>;
 }
 
 const gnosis_api_set: GnosisApi = {
@@ -112,6 +135,7 @@ const gnosis_api_set: GnosisApi = {
   add_token,
   add_transaction,
   delete_transaction,
+  add_confirmation,
 };
 
 export default gnosis_api_set;

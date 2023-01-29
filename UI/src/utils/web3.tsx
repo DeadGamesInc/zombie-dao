@@ -134,7 +134,7 @@ export const get_gnosis_details = async (
   const contract = get_gnosis_safe(address);
   const nonce = await contract.methods.nonce().call();
   const owners = await contract.methods.getOwners().call();
-  const threshold = await contract.methods.threshold.call();
+  const threshold = await contract.methods.getThreshold().call();
 
   return {
     nonce,

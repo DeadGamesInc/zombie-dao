@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import apis from 'api';
@@ -27,10 +27,9 @@ import Loading from 'views/Loading';
 import WrongBlockchain from 'views/WrongBlockchain';
 
 import {
-  get_gnosis_details,
   get_balance,
   get_erc20_balance,
-  get_eip712_message_types,
+  get_gnosis_details,
   sign_gnosis_transaction,
 } from 'utils/web3';
 
@@ -194,7 +193,11 @@ const GnosisSafe: React.FC = () => {
     };
 
     const signature = await sign_gnosis_transaction(tx_args, safe);
-    console.log(signature);
+    if (signature === FailedResponse) return;
+    await apis.gnosis.add_confirmation(safe.id, tx.id, {
+      signature: signature.toString(),
+    });
+    setReload(!reload);
   };
 
   if (!logged_in) return <NotLoggedIn />;
@@ -202,6 +205,7 @@ const GnosisSafe: React.FC = () => {
   if (safe.chain_id !== chain_id)
     return <WrongBlockchain correct_chain={safe.chain_id} />;
 
+  console.log(onchain?.threshold);
   return (
     <PageContainer>
       <HeaderText text="Gnosis Safe" />
@@ -242,11 +246,11 @@ const GnosisSafe: React.FC = () => {
           <br />
           Creator: {tx.creator}
           <br />
-          Confirmations:
+          Confirmations({tx.confirmations?.length} / {onchain?.threshold}):
           <br />
           {tx.confirmations?.map((confirmation) => (
             <div key={confirmation.id}>
-              {confirmation.wallet}
+              &ensp; - {confirmation.wallet}
               <br />
             </div>
           ))}
