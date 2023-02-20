@@ -48,7 +48,7 @@ public sealed class Program {
             .CreateDefaultBuilder()
             .ConfigureServices(services => {
                 services.AddDbContextFactory<DataContext>(options => {
-                    options.UseNpgsql(Environment.GetEnvironmentVariable("DBCONN") 
+                    options.UseNpgsql(Environment.GetEnvironmentVariable("ZOMBIE_DAO_DBCONN") 
                                       ?? throw new Exception("Must provide PostgreSQL connection string"),
                         settings => settings.EnableRetryOnFailure(5, TimeSpan.FromSeconds(1), new List<string>()));
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);

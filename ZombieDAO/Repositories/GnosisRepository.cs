@@ -75,4 +75,18 @@ public sealed class GnosisRepository : ZombieDAORepository {
 
         await Executor(action, "add_confirmation");
     }
+
+    public async Task SetExecuted(Guid id, CancellationToken token) {
+        async Task action() {
+            _logger.Information("Setting transaction {ID} to executed", id);
+            await using var context = await _factory.CreateDbContextAsync(token);
+            var transaction = await context.GnosisSafeTransactions.FirstOrDefaultAsync(a => a.ID == id, token);
+            if (transaction == null) throw new NotFoundException("Invalid transaction ID");
+            transaction.Executed = true;
+            context.Update(transaction);
+            await context.SaveChangesAsync(token);
+        }
+
+        await Executor(action, "set_transaction_executed");
+    }
 }

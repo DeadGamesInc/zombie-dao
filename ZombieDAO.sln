@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{E95CFE52-D65
 		create_db_migration.sh = create_db_migration.sh
 		lines.sh = lines.sh
 		remove_db_migration.sh = remove_db_migration.sh
+		.dockerignore = .dockerignore
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Global

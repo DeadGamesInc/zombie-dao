@@ -5,6 +5,7 @@ import apis from 'api';
 import config from 'config';
 import tools from 'utils/tools';
 import { useAppSelector } from 'store/hooks';
+import { get_gnosis_safe } from 'utils/web3';
 
 import GnosisSafeDetailsDTO from 'dtos/GnosisSafeDetailsDTO';
 import CreateGnosisSafeTokenDTO from 'dtos/CreateGnosisSafeTokenDTO';
@@ -194,9 +195,46 @@ const GnosisSafe: React.FC = () => {
 
     const signature = await sign_gnosis_transaction(tx_args, safe);
     if (signature === FailedResponse) return;
+
     await apis.gnosis.add_confirmation(safe.id, tx.id, {
       signature: signature.toString(),
     });
+
+    setReload(!reload);
+  };
+
+  const handle_execute_transaction = async (
+    tx: GnosisSafeTransactionDetailsDTO,
+    safe: GnosisSafeDetailsDTO,
+  ): Promise<void> => {
+    const sorted = tx.confirmations?.sort((a, b) => {
+      if (a.wallet > b.wallet) return 1;
+      if (b.wallet > a.wallet) return -1;
+      return 0;
+    });
+
+    let signature = '0x';
+    sorted?.forEach(
+      (confirmation) => (signature = signature + confirmation.signature),
+    );
+
+    const contract = get_gnosis_safe(safe.address);
+    await contract.methods
+      .execTransaction(
+        tx.to,
+        tx.value,
+        tx.data,
+        tx.operation,
+        tx.safe_tx_gas,
+        tx.base_gas,
+        tx.gas_price,
+        tx.gas_token,
+        tx.refund_receiver,
+        signature,
+      )
+      .send({ from: wallet });
+
+    await apis.gnosis.set_executed(safe.id, tx.id);
     setReload(!reload);
   };
 
@@ -273,6 +311,13 @@ const GnosisSafe: React.FC = () => {
                 text="SIGN"
                 onClick={() => handle_sign_transaction(tx, safe)}
                 disabled={tx.has_signed}
+              />
+              <ActionButton
+                text="EXECUTE"
+                onClick={() => handle_execute_transaction(tx, safe)}
+                disabled={
+                  (tx.confirmations?.length ?? 0) < (onchain?.threshold ?? 99)
+                }
               />
             </>
           )}

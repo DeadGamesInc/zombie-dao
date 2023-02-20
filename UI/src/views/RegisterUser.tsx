@@ -44,6 +44,8 @@ const RegisterUser: React.FC = () => {
       display_name: form.display_name.value,
     };
 
+    console.log(dto);
+
     const result = await apis.users.complete_registration(dto);
     if (result === FailedResponse) return;
 

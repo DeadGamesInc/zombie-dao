@@ -63,4 +63,11 @@ public sealed class GnosisManager {
         var model = GnosisSafeConfirmationModel.Create(dto, txID, wallet);
         await _gnosisRepository.AddConfirmation(model, token);
     }
+
+    public async Task SetTransactionExecuted(Guid safeID, Guid txID, string wallet, CancellationToken token) {
+        var safe = await _gnosisRepository.GetByID(safeID, token);
+        var project = await _projectManager.GetById(safe.ProjectID, wallet, token);
+        if (project.Level is not ProjectMemberLevel.ADMIN) throw new NotAllowedException();
+        await _gnosisRepository.SetExecuted(txID, token);
+    }
 }

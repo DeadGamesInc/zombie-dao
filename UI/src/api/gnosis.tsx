@@ -99,6 +99,20 @@ const add_confirmation = async (
   return await executor(action, 'add_gnosis_transaction_confirmation');
 };
 
+const set_executed = async (
+  safe_id: string,
+  tx_id: string,
+): Promise<void | FailedResponse> => {
+  const action = async (): Promise<void> => {
+    await getAxios().request({
+      method: 'PUT',
+      url: `gnosis/${safe_id}/transactions/${tx_id}/set_executed`,
+    });
+  };
+
+  return await executor(action, 'set_gnosis_transaction_executed');
+};
+
 export interface GnosisApi {
   get_by_id: (id: string) => Promise<GnosisSafeDetailsDTO | FailedResponse>;
 
@@ -127,6 +141,11 @@ export interface GnosisApi {
     tx_id: string,
     dto: CreateGnosisSafeConfirmationDTO,
   ) => Promise<void | FailedResponse>;
+
+  set_executed: (
+    safe_id: string,
+    tx_id: string,
+  ) => Promise<void | FailedResponse>;
 }
 
 const gnosis_api_set: GnosisApi = {
@@ -136,6 +155,7 @@ const gnosis_api_set: GnosisApi = {
   add_transaction,
   delete_transaction,
   add_confirmation,
+  set_executed,
 };
 
 export default gnosis_api_set;
