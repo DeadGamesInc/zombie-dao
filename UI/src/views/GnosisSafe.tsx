@@ -5,7 +5,13 @@ import apis from 'api';
 import config from 'config';
 import tools from 'utils/tools';
 import { useAppSelector } from 'store/hooks';
-import { get_gnosis_safe } from 'utils/web3';
+import {
+  get_balance,
+  get_erc20_balance,
+  get_gnosis_details,
+  get_gnosis_safe,
+  sign_gnosis_transaction,
+} from 'utils/web3';
 
 import GnosisSafeDetailsDTO from 'dtos/GnosisSafeDetailsDTO';
 import CreateGnosisSafeTokenDTO from 'dtos/CreateGnosisSafeTokenDTO';
@@ -26,13 +32,6 @@ import ActionButton from 'components/ActionButton';
 import NotLoggedIn from 'views/NotLoggedIn';
 import Loading from 'views/Loading';
 import WrongBlockchain from 'views/WrongBlockchain';
-
-import {
-  get_balance,
-  get_erc20_balance,
-  get_gnosis_details,
-  sign_gnosis_transaction,
-} from 'utils/web3';
 
 export type GnosisSafeParams = {
   id: string;
@@ -214,9 +213,12 @@ const GnosisSafe: React.FC = () => {
     });
 
     let signature = '0x';
-    sorted?.forEach(
-      (confirmation) => (signature = signature + confirmation.signature),
-    );
+    sorted?.forEach((confirmation) => {
+      console.log(confirmation.signature);
+      signature = signature + confirmation.signature;
+    });
+
+    console.log(signature);
 
     const contract = get_gnosis_safe(safe.address);
     await contract.methods
