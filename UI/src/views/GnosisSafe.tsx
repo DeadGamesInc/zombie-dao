@@ -214,11 +214,8 @@ const GnosisSafe: React.FC = () => {
 
     let signature = '0x';
     sorted?.forEach((confirmation) => {
-      console.log(confirmation.signature);
       signature = signature + confirmation.signature;
     });
-
-    console.log(signature);
 
     const contract = get_gnosis_safe(safe.address);
     await contract.methods

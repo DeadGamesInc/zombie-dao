@@ -42,7 +42,7 @@ public sealed class GnosisController : ZombieDAOController {
         return Ok();
     }
 
-    [HttpPut("${safeID:guid}/transactions/{txID:guid}/set_executed")]
+    [HttpPut("{safeID:guid}/transactions/{txID:guid}/set_executed")]
     public async Task<ActionResult> SetTransactionExecuted([FromRoute] Guid safeID, [FromRoute] Guid txID, CancellationToken token) {
         await _gnosisManager.SetTransactionExecuted(safeID, txID, GetCurrentUser().Wallet, token);
         return Ok();
